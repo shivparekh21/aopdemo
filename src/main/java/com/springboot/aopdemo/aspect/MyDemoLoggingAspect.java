@@ -2,6 +2,7 @@ package com.springboot.aopdemo.aspect;
 
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.Pointcut;
 import org.springframework.stereotype.Component;
 
 @Aspect
@@ -9,9 +10,29 @@ import org.springframework.stereotype.Component;
 public class MyDemoLoggingAspect {
     // Aspect is a Java Class that has collection of related advices Before, After
 
-    @Before("execution(public void com.springboot.aopdemo.*.add*(..))")
+    // Pointcut declaration can be reused in multiple advices by just referring to the method name
+    @Pointcut("execution(* com.springboot.aopdemo.dao.*.*(..))")
+    private void forDaoPackage() {}
+
+    @Pointcut("execution(* com.springboot.aopdemo.dao..get*(..))")
+    private void getter() {}
+    @Pointcut("execution(* com.springboot.aopdemo.dao..set*(..))")
+    private void setter() {}
+
+    @Pointcut("forDaoPackage() && !(getter() || setter())")
+    private void forDaoPackageExcludeGetterSetter() {}
+
+
+//    @Before("execution(* com.springboot.aopdemo.dao.*.*(..))")
+//    @Before("forDaoPackage()") // Using Pointcut declaration
+    @Before("forDaoPackageExcludeGetterSetter()") // Using Pointcut declaration
     public void beforeAddAccountAdvice() {
-        System.out.println(getClass() + ": Executing @Before advice on add*()");
+        System.out.println(getClass() + ": Executing @Before advice on *()");
+    }
+
+    @Before("forDaoPackageExcludeGetterSetter()") // Using Pointcut declaration
+    public void performApiAnalytics() {
+        System.out.println(getClass() + ": Performing API analytics");
     }
 
 
