@@ -23,10 +23,9 @@ public class AopdemoApplication {
 	}
 
 	private void demoTheBeforeAdvice(AccountDao accountDao, MembershipDAO membershipDao) {
-		System.out.println("\n=====> DEMO THE @BEFORE ADVICE CALLING ACCOUNTDAO");
-		accountDao.addAccount();
 
-		System.out.println("\n=====> DEMO THE @BEFORE ADVICE CALLING MEMBERSHIPDAO");
+		accountDao.addAccount(new Account());
+
 		membershipDao.addMemberAccount();
 	}
 

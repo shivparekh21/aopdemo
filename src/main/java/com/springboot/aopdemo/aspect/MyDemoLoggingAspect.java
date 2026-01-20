@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 public class MyDemoLoggingAspect {
     // Aspect is a Java Class that has collection of related advices Before, After
 
-    @Before("execution(public void add*())")
+    @Before("execution(public void com.springboot.aopdemo.*.add*(..))")
     public void beforeAddAccountAdvice() {
         System.out.println(getClass() + ": Executing @Before advice on add*()");
     }
@@ -28,4 +28,7 @@ public class MyDemoLoggingAspect {
 //    (..) zero or more arguments of any type
 //    (com.springboot.aopdemo.dao.Account) one argument of type Account
 //    (* com.springboot.aopdemo.dao.*.*(..)) any return type, any class in dao package, any method with any arguments
+//    (* com.springboot.aopdemo.dao.*.*(com.springboot.aopdemo.dao.Account, ..))  first argument of type Account, then zero or more arguments of any type
+//     @Before("execution(public void com.springboot.aopdemo..add*(..))") // .. means any class within the package and its sub-packages to avoid Error
+
 }
