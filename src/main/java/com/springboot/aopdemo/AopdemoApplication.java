@@ -2,6 +2,7 @@ package com.springboot.aopdemo;
 
 import com.springboot.aopdemo.dao.AccountDao;
 import com.springboot.aopdemo.dao.MembershipDAO;
+import com.springboot.aopdemo.service.TrafficFortuneService;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,16 +18,38 @@ public class AopdemoApplication {
 	}
 
 	@Bean
-	public CommandLineRunner commandLineRunner(AccountDao accountDao, MembershipDAO membershipDao) {
+	public CommandLineRunner commandLineRunner(AccountDao accountDao,
+											   MembershipDAO membershipDao,
+											   TrafficFortuneService trafficFortuneService) {
 		return runner -> {
 //			demoTheBeforeAdvice(accountDao, membershipDao);
 //			demoAfterReturningAdvice(accountDao);
 //			demoTheAfterThrowingAdvice(accountDao);
-			demoTheAroundAdvice(accountDao);
+//			demoTheAfterAdvice(accountDao);
+//			demoTheAroundAdvice(trafficFortuneService);
+			demoTheAroundAdviceHandleException(trafficFortuneService);
 		};
 	}
 
-	private void demoTheAroundAdvice(AccountDao accountDao) {
+	private void demoTheAroundAdviceHandleException(TrafficFortuneService trafficFortuneService) {
+		System.out.println("\n\nMain Program: Around Advice Demo with Exception Handling");
+		System.out.println("----------------------------");
+		System.out.println("Calling getFortune()");
+
+		boolean tripWire =true;
+		String data = trafficFortuneService.getFortune(tripWire);
+		System.out.println("\nMy Fortune is: " + data);
+	}
+
+	private void demoTheAroundAdvice(TrafficFortuneService trafficFortuneService) {
+		System.out.println("\n\nMain Program: Around Advice Demo");
+		System.out.println("----------------------------");
+		System.out.println("Calling getFortune()");
+		String data = trafficFortuneService.getFortune();
+		System.out.println("\nMy Fortune is: " + data);
+	}
+
+	private void demoTheAfterAdvice(AccountDao accountDao) {
 		List<Account> myAccounts = null;
 		try{
 			boolean trueWire = true;

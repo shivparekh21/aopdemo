@@ -2,6 +2,7 @@ package com.springboot.aopdemo.aspect;
 
 import com.springboot.aopdemo.Account;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.*;
 
 import org.aspectj.lang.reflect.MethodSignature;
@@ -83,6 +84,33 @@ public class MyDemoLoggingAspect{
         // Print out which method we are advising on
         String method = joinPoint.getSignature().toShortString();
         System.out.println("\n----->>> Executing @After (finally) on method: " + method);
+    }
+
+
+    @Around(value = "execution(* com.springboot.aopdemo.service.TrafficFortuneService.getFortune(..))")
+    public Object aroundAdvice(ProceedingJoinPoint joinPoint) throws Throwable {
+        // Print out which method we are advising on
+        String method = joinPoint.getSignature().toShortString();
+        System.out.println("\n----->>> Executing @Around on method: " + method);
+
+        long begin = System.currentTimeMillis();
+
+        Object result = null;
+        try {
+            result = joinPoint.proceed();
+        } catch (Exception e) {
+            // log the exception
+            System.out.println(e.getMessage());
+            result = "Major accident! But no worries, your private AOP helicopter is on the way!";
+        }
+
+        long end = System.currentTimeMillis();
+
+        // Compute duration and display it
+        long duration = end - begin;
+        System.out.println("\n----->>> Duration: " + duration / 1000.0 + " seconds");
+
+        return result;
     }
 
 
