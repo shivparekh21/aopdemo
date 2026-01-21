@@ -2,10 +2,7 @@ package com.springboot.aopdemo.aspect;
 
 import com.springboot.aopdemo.Account;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.AfterReturning;
-import org.aspectj.lang.annotation.AfterThrowing;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
+import org.aspectj.lang.annotation.*;
 
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.core.annotation.Order;
@@ -78,6 +75,14 @@ public class MyDemoLoggingAspect{
         // Log the exception
         System.out.println("\n----->>> The exception is: " + theExc);
 
+    }
+
+
+    @After(value = "execution(* com.springboot.aopdemo.dao.AccountDao.findAccounts(..))")
+    public void afterFinallyFindAccountsAdvice(JoinPoint joinPoint) {
+        // Print out which method we are advising on
+        String method = joinPoint.getSignature().toShortString();
+        System.out.println("\n----->>> Executing @After (finally) on method: " + method);
     }
 
 
